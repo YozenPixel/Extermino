@@ -19,11 +19,24 @@ interface DataTableProps<T> {
   onRowClick?: (item: T) => void;
   actions?: (item: T) => React.ReactNode;
   emptyMessage?: string;
+  loading?: boolean;
+}
+
+function SkeletonRow({ cols }: { cols: number }) {
+  return (
+    <tr className="animate-pulse">
+      {Array.from({ length: cols }).map((_, i) => (
+        <td key={i} className="px-4 py-3">
+          <div className="h-4 bg-gray-100 rounded w-3/4" />
+        </td>
+      ))}
+    </tr>
+  );
 }
 
 export default function DataTable<T extends Record<string, any>>({
   columns, data, searchable = true, searchPlaceholder = 'Rechercher...',
-  searchKeys, pageSize = 8, onRowClick, actions, emptyMessage = 'Aucune donnée',
+  searchKeys, pageSize = 8, onRowClick, actions, emptyMessage = 'Aucune donnée', loading = false,
 }: DataTableProps<T>) {
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(0);
@@ -61,6 +74,15 @@ export default function DataTable<T extends Record<string, any>>({
     }
   };
 
+  const handleRowKeyDown = (e: React.KeyboardEvent, item: T) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      onRowClick?.(item);
+    }
+  };
+
+  const colspan = columns.length + (actions ? 1 : 0);
+
   return (
     <div className="bg-white rounded-2xl border border-gray-100">
       {/* Toolbar */}
@@ -77,15 +99,35 @@ export default function DataTable<T extends Record<string, any>>({
                 className="w-full pl-9 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 transition-all"
               />
             </div>
-            <button className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors">
+            <button className="p-2 rounded-lg hover:bg-gray-100 text-gray-400 transition-colors" aria-label="Filter">
               <SlidersHorizontal size={18} />
             </button>
           </div>
         </div>
       )}
 
-      {/* Empty state */}
-      {paged.length === 0 ? (
+      {/* Loading state */}
+      {loading ? (
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-gray-50">
+                {columns.map((col) => (
+                  <th key={col.key} className={`px-4 py-3 text-left text-xs font-semibold text-gray-400 uppercase tracking-wider ${col.className || ''}`}>
+                    {col.label}
+                  </th>
+                ))}
+                {actions && <th className="px-4 py-3 text-xs font-semibold text-gray-400 uppercase tracking-wider text-right">Actions</th>}
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-50">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <SkeletonRow key={i} cols={colspan} />
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : paged.length === 0 ? (
         <div className="p-12 text-center">
           <p className="text-gray-400">{emptyMessage}</p>
         </div>
@@ -126,6 +168,9 @@ export default function DataTable<T extends Record<string, any>>({
                   <tr
                     key={item.id || idx}
                     onClick={() => onRowClick?.(item)}
+                    onKeyDown={(e) => handleRowKeyDown(e, item)}
+                    tabIndex={onRowClick ? 0 : undefined}
+                    role={onRowClick ? 'button' : undefined}
                     className={`${onRowClick ? 'cursor-pointer' : ''} hover:bg-gray-50/50 transition-colors`}
                   >
                     {columns.map((col) => (
@@ -153,6 +198,7 @@ export default function DataTable<T extends Record<string, any>>({
                   onClick={() => setPage(Math.max(0, page - 1))}
                   disabled={page === 0}
                   className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  aria-label="Page précédente"
                 >
                   <ChevronLeft size={18} />
                 </button>
@@ -160,6 +206,7 @@ export default function DataTable<T extends Record<string, any>>({
                   onClick={() => setPage(Math.min(totalPages - 1, page + 1))}
                   disabled={page >= totalPages - 1}
                   className="p-2 rounded-lg hover:bg-gray-100 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+                  aria-label="Page suivante"
                 >
                   <ChevronRight size={18} />
                 </button>

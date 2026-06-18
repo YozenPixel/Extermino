@@ -5,7 +5,27 @@ import {
   mockDashboardStats, mockActivities, mockNotifications,
 } from './mockData';
 
-// --- Client Store ---
+const STORAGE_KEY = 'hygiene-pro-data';
+
+interface PersistedData {
+  interventions: Intervention[];
+}
+
+function loadFromStorage<T>(key: string, fallback: T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw) return JSON.parse(raw) as T;
+  } catch { /* ignore parse errors */ }
+  return fallback;
+}
+
+function saveToStorage(key: string, data: PersistedData) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch { /* ignore storage errors */ }
+}
+
+// Client Store
 interface ClientStore {
   clients: Client[];
   addClient: (client: Client) => void;
@@ -24,7 +44,7 @@ export const useClientStore = create<ClientStore>((set, get) => ({
   getClient: (id) => get().clients.find((c) => c.id === id),
 }));
 
-// --- Intervention Store ---
+// Intervention Store
 interface InterventionStore {
   interventions: Intervention[];
   addIntervention: (intervention: Intervention) => void;
@@ -33,17 +53,39 @@ interface InterventionStore {
   getIntervention: (id: string) => Intervention | undefined;
 }
 
+const initialInterventions = loadFromStorage<Intervention[]>(STORAGE_KEY, mockInterventions);
+
+function persistInterventions(interventions: Intervention[]) {
+  saveToStorage(STORAGE_KEY, { interventions });
+}
+
 export const useInterventionStore = create<InterventionStore>((set, get) => ({
-  interventions: mockInterventions,
-  addIntervention: (intervention) => set((s) => ({ interventions: [...s.interventions, intervention] })),
-  updateIntervention: (id, data) => set((s) => ({
-    interventions: s.interventions.map((i) => (i.id === id ? { ...i, ...data } : i)),
-  })),
-  deleteIntervention: (id) => set((s) => ({ interventions: s.interventions.filter((i) => i.id !== id) })),
+  interventions: initialInterventions,
+  addIntervention: (intervention) => {
+    set((s) => {
+      const updated = [...s.interventions, intervention];
+      persistInterventions(updated);
+      return { interventions: updated };
+    });
+  },
+  updateIntervention: (id, data) => {
+    set((s) => {
+      const updated = s.interventions.map((i) => (i.id === id ? { ...i, ...data } : i));
+      persistInterventions(updated);
+      return { interventions: updated };
+    });
+  },
+  deleteIntervention: (id) => {
+    set((s) => {
+      const updated = s.interventions.filter((i) => i.id !== id);
+      persistInterventions(updated);
+      return { interventions: updated };
+    });
+  },
   getIntervention: (id) => get().interventions.find((i) => i.id === id),
 }));
 
-// --- Technician Store ---
+// Technician Store
 interface TechnicianStore {
   technicians: Technician[];
   addTechnician: (tech: Technician) => void;
@@ -62,7 +104,7 @@ export const useTechnicianStore = create<TechnicianStore>((set, get) => ({
   getTechnician: (id) => get().technicians.find((t) => t.id === id),
 }));
 
-// --- Dashboard Store ---
+// Dashboard Store
 interface DashboardStore {
   stats: DashboardStats;
   activities: ActivityItem[];

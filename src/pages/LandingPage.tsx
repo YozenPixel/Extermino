@@ -109,7 +109,7 @@ export default function LandingPage() {
       <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden"
         style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%)' }}>
         <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: 'url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?q=80&w=2070&auto=format&fit=crop")',
+          backgroundImage: 'url("/hero-bg.jpg")',
           backgroundSize: 'cover', backgroundPosition: 'center 30%', filter: 'brightness(0.5)',
         }} />
         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#1a1a2e]/60" />

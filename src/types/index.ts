@@ -46,7 +46,7 @@ export interface Intervention {
   description?: string;
   date: string;
   time: string;
-  duration: number; // hours
+  duration: number;
   address: string;
   clientId: string;
   clientName: string;
@@ -88,22 +88,4 @@ export interface MonthlyStats {
   interventions: number;
   clients: number;
   revenue: number;
-}
-
-export interface Translations {
-  [key: string]: any;
-  nav: { [key: string]: string };
-  header: { [key: string]: string };
-  hero: { [key: string]: string };
-  expertise: { [key: string]: any };
-  whyChooseUs: { [key: string]: any };
-  quickContact: { [key: string]: any };
-  footer: { [key: string]: string };
-  dashboard: { [key: string]: string };
-  clients: { [key: string]: string };
-  interventions: { [key: string]: string };
-  technicians: { [key: string]: string };
-  calendar: { [key: string]: string };
-  reports: { [key: string]: string };
-  profile: { [key: string]: string };
 }
