@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+@theme {
+  /* Primary - Orange */
+  --color-primary-50: #FFF0EA;
+  --color-primary-100: #FFD6C4;
+  --color-primary-200: #FFB89E;
+  --color-primary-300: #FF8F6E;
+  --color-primary-400: #FF6B42;
+  --color-primary-500: #E8562A;
+  --color-primary-600: #CC4A22;
+  --color-primary-700: #A83C1C;
+  --color-primary-800: #852F16;
+  --color-primary-900: #632210;
+
+  /* Gray - Secondary */
+  --color-gray-50: #F8F9FA;
+  --color-gray-100: #E8ECEF;
+  --color-gray-200: #D1D5DB;
+  --color-gray-300: #9CA3AF;
+  --color-gray-400: #6B7280;
+  --color-gray-500: #4B5563;
+  --color-gray-600: #374151;
+  --color-gray-700: #2D3436;
+  --color-gray-800: #1E272E;
+  --color-gray-900: #111827;
+
+  /* Accent - Gold */
+  --color-accent-50: #FFF8E8;
+  --color-accent-100: #FFEBB5;
+  --color-accent-200: #FFDE82;
+  --color-accent-300: #FFD14F;
+  --color-accent-400: #F5C03C;
+  --color-accent-500: #F0A830;
+  --color-accent-600: #D4922A;
+  --color-accent-700: #B87A24;
+  --color-accent-800: #9C631E;
+  --color-accent-900: #804C18;
+
+  /* Semantic colors */
+  --color-success: #27AE60;
+  --color-success-light: #E8F8F0;
+  --color-error: #E74C3C;
+  --color-error-light: #FDE8E8;
+  --color-warning: #F39C12;
+  --color-warning-light: #FFF8E1;
+  --color-info: #3498DB;
+  --color-info-light: #E8F4FD;
+
+  /* Surface */
+  --color-surface: #FFFFFF;
+  --color-surface-alt: #F8F9FA;
+  --color-surface-dark: #1E272E;
+  --color-border: #E8ECEF;
+  --color-border-light: #F0F2F5;
+
+  /* Text */
+  --color-text: #2D3436;
+  --color-text-secondary: #636E72;
+  --color-text-muted: #95A5A6;
+  --color-text-light: #FFFFFF;
+
+  /* Fonts */
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-heading: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  --shadow-card-hover: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  --shadow-dropdown: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-modal: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}
+
+/* Base styles */
+@layer base {
+  body {
+    @apply font-sans text-text bg-surface antialiased;
+  }
+
+  ::selection {
+    @apply bg-primary-500 text-white;
+  }
+}
