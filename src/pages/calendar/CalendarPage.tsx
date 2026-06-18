@@ -37,12 +37,12 @@ const statusStyles: Record<string, string> = {
   cancelled: 'bg-red-50 text-red-500',
 };
 
-const statusLabelKey: Record<string, string> = {
+const statusLabelKey = {
   scheduled: 'scheduled',
   'in-progress': 'inProgress',
   completed: 'completed',
   cancelled: 'cancelled',
-};
+} as const;
 
 // Business hours for week/day views
 const minDate = (() => { const d = new Date(); d.setHours(7, 0, 0, 0); return d; })();
@@ -212,15 +212,14 @@ export default function CalendarPage() {
   // ──────────────────────────────────────────────
   // Drag & drop to reschedule
   // ──────────────────────────────────────────────
-  const handleEventDrop = useCallback(({ event, start, end, isAllDay: droppedOnAllDaySlot }: {
-    event: Event; start: Date; end: Date; isAllDay: boolean;
+  const handleEventDrop = useCallback(({ event, start, isAllDay: droppedOnAllDaySlot }: {
+    event: Event; start: Date; isAllDay: boolean;
   }) => {
     const resource = (event as any).resource as Intervention | undefined;
     if (!resource) return;
 
     const newDate = format(start, 'yyyy-MM-dd');
     const newTime = format(start, 'HH:mm');
-    const duration = resource.duration;
 
     // Preserve the original time if dropped on the all-day header area
     const time = droppedOnAllDaySlot ? resource.time : newTime;
@@ -347,7 +346,7 @@ export default function CalendarPage() {
               timeslots={2}
               defaultDate={new Date()}
               components={{
-                event: (props) => (
+                event: (props: { event: Event; title: string }) => (
                   <div title={props.title} style={{ padding: 0 }}>
                     {props.title}
                   </div>
