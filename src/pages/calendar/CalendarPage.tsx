@@ -18,11 +18,11 @@ const typeColors: Record<string, string> = {
 };
 
 export default function CalendarPage() {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
   const { interventions } = useInterventionStore();
   const [view, setView] = useState<'month' | 'week' | 'day'>('month');
   const [date, setDate] = useState(new Date());
-  const [selectedEvent, setSelectedEvent] = useState<any>(null);
+  const [, setSelectedEvent] = useState<Event | null>(null);
 
   const events: Event[] = useMemo(() =>
     interventions.map((i) => ({
@@ -95,11 +95,11 @@ export default function CalendarPage() {
             endAccessor="end"
             style={{ height: '100%' }}
             view={view}
-            onView={(v) => setView(v as any)}
+            onView={(v: string) => setView(v as 'month' | 'week' | 'day')}
             date={date}
-            onNavigate={(d) => setDate(d)}
+            onNavigate={(d: Date) => setDate(d)}
             eventPropGetter={eventStyleGetter}
-            onSelectEvent={(e) => setSelectedEvent(e)}
+            onSelectEvent={(e: Event) => setSelectedEvent(e)}
             popup
             selectable
             culture="fr"

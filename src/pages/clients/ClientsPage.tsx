@@ -255,7 +255,7 @@ export default function ClientsPage() {
                               <h5 className="text-sm font-semibold text-gray-800">{intervention.title}</h5>
                             </div>
                             <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusStyles[intervention.status]}`}>
-                              {t.interventions[intervention.status]}
+                              {t.interventions[intervention.status === 'in-progress' ? 'inProgress' : intervention.status]}
                             </span>
                           </div>
                           <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-400">

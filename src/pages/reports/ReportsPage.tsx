@@ -14,7 +14,7 @@ import { mockMonthlyStats } from '../../stores/mockData';
 ChartJS.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, ArcElement, Title, Tooltip, Legend, Filler);
 
 export default function ReportsPage() {
-  const { t, lang } = useI18n();
+  const { t } = useI18n();
   const { interventions } = useInterventionStore();
 
   const typeCounts = useMemo(() => {

@@ -172,17 +172,17 @@ export default function ProfilePage() {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile.name}</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile['name']}</label>
               <input type="text" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 transition-all" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile.company}</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile['company']}</label>
               <input type="text" value={form.company} onChange={(e) => setForm({ ...form, company: e.target.value })}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 transition-all" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile.email}</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile['email']}</label>
               <div className="relative">
                 <Mail size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })}
@@ -190,7 +190,7 @@ export default function ProfilePage() {
               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile.phone}</label>
+              <label className="block text-sm font-medium text-gray-700 mb-1">{t.profile['phone']}</label>
               <div className="relative">
                 <Phone size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
                 <input type="tel" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })}

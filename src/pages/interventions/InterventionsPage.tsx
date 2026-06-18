@@ -39,6 +39,13 @@ const typeIcons: Record<InterventionType, string> = {
 
 const statusOptions: InterventionStatus[] = ['scheduled', 'in-progress', 'completed', 'cancelled'];
 
+const statusLabelKey = {
+  scheduled: 'scheduled',
+  'in-progress': 'inProgress',
+  completed: 'completed',
+  cancelled: 'cancelled',
+} as const;
+
 export default function InterventionsPage() {
   const { t, lang } = useI18n();
   const { interventions, addIntervention, updateIntervention, deleteIntervention } = useInterventionStore();
@@ -94,7 +101,7 @@ export default function InterventionsPage() {
     ? interventions
     : interventions.filter((i) => i.status === statusFilter);
 
-  const statusCounts = {
+  const statusCounts: Record<string, number> = {
     all: interventions.length,
     scheduled: interventions.filter((i) => i.status === 'scheduled').length,
     'in-progress': interventions.filter((i) => i.status === 'in-progress').length,
@@ -117,7 +124,7 @@ export default function InterventionsPage() {
     {
       key: 'status', label: t.interventions.status, render: (i: Intervention) => (
         <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${statusStyles[i.status]}`}>
-          {statusIcons[i.status]} {t.interventions[i.status]}
+          {statusIcons[i.status]} {t.interventions[statusLabelKey[i.status]]}
         </span>
       ),
     },
@@ -142,7 +149,23 @@ export default function InterventionsPage() {
 
       {/* Status filter tabs */}
       <div className="flex flex-wrap items-center gap-2">
-        {(['all', ...statusOptions] as const).map((status) => (
+        <button
+          key="all"
+          onClick={() => setStatusFilter('all')}
+          className={`inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+            statusFilter === 'all'
+              ? 'bg-orange-50 text-orange-600 shadow-sm border border-orange-200'
+              : 'bg-white text-gray-500 border border-gray-200 hover:border-gray-300 hover:text-gray-700'
+          }`}
+        >
+          <Filter size={14} /> {t.interventions.all}
+          <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-full ${
+            statusFilter === 'all' ? 'bg-orange-200/50 text-orange-700' : 'bg-gray-100 text-gray-500'
+          }`}>
+            {statusCounts.all}
+          </span>
+        </button>
+        {statusOptions.map((status) => (
           <button
             key={status}
             onClick={() => setStatusFilter(status)}
@@ -152,12 +175,8 @@ export default function InterventionsPage() {
                 : 'bg-white text-gray-500 border border-gray-200 hover:border-gray-300 hover:text-gray-700'
             }`}
           >
-            {status !== 'all' && statusIcons[status]}
-            {status === 'all' ? (
-              <><Filter size={14} /> {t.interventions.all}</>
-            ) : (
-              t.interventions[status]
-            )}
+            {statusIcons[status]}
+            {t.interventions[statusLabelKey[status]]}
             <span className={`ml-1 text-xs px-1.5 py-0.5 rounded-full ${
               statusFilter === status ? 'bg-orange-200/50 text-orange-700' : 'bg-gray-100 text-gray-500'
             }`}>
@@ -205,7 +224,7 @@ export default function InterventionsPage() {
               <select value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value as InterventionStatus })}
                 className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400 bg-white">
                 {(['scheduled', 'in-progress', 'completed', 'cancelled'] as InterventionStatus[]).map((s) => (
-                  <option key={s} value={s}>{t.interventions[s]}</option>
+                  <option key={s} value={s}>{t.interventions[statusLabelKey[s]]}</option>
                 ))}
               </select>
             </div>
@@ -246,8 +265,8 @@ export default function InterventionsPage() {
               className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-400" />
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <button onClick={() => setModalOpen(false)} className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">{t.interventions.cancel}</button>
-            <button onClick={handleSave} className="px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">{t.interventions.save}</button>
+            <button onClick={() => setModalOpen(false)} className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg transition-colors">{t.interventions['cancel']}</button>
+            <button onClick={handleSave} className="px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg transition-colors">{t.interventions['save']}</button>
           </div>
         </div>
       </Modal>
@@ -291,7 +310,7 @@ export default function InterventionsPage() {
                         <p className="text-sm text-gray-400 mt-0.5">{t.interventions[selectedIntervention.type]}</p>
                       </div>
                       <span className={`inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1 rounded-full ${statusStyles[selectedIntervention.status]}`}>
-                        {statusIcons[selectedIntervention.status]} {t.interventions[selectedIntervention.status]}
+                        {statusIcons[selectedIntervention.status]} {t.interventions[statusLabelKey[selectedIntervention.status]]}
                       </span>
                     </div>
                   </div>

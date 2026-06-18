@@ -80,7 +80,7 @@ export default function WhyChooseUs() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {t.whyChooseUs.items.map((item, index) => {
+          {t.whyChooseUs.items.map((item: { title: string; desc: string }, index: number) => {
             const Icon = getIcon(item.title);
             const colors = itemColors[index];
 
@@ -95,7 +95,7 @@ export default function WhyChooseUs() {
                   className="why-choose-us__card-icon"
                   style={{ background: colors.bg, borderColor: colors.border }}
                 >
-                  <Icon size={28} strokeWidth={1.5} style={{ color: colors.icon }} />
+                  <div style={{ color: colors.icon }}><Icon size={28} strokeWidth={1.5} /></div>
                 </div>
 
                 <div className="why-choose-us__card-content">
@@ -120,7 +120,7 @@ export default function WhyChooseUs() {
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          {t.whyChooseUs.stats.map((stat, index) => (
+          {t.whyChooseUs.stats.map((stat: { number: string; label: string }, index: number) => (
             <div key={index} className="why-choose-us__stat">
               <span className="why-choose-us__stat-number">{stat.number}</span>
               <span className="why-choose-us__stat-label">{stat.label}</span>

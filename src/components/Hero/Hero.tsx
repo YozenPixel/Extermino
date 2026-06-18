@@ -96,7 +96,7 @@ export default function Hero() {
 
         {/* Title */}
         <motion.h1 className="hero__title" variants={itemVariants}>
-          {t.hero.title.split('.').map((part, i) => (
+          {t.hero.title.split('.').map((part: string, i: number) => (
             <span key={i}>
               {part}{i === 0 ? '.' : ''}
               {i === 0 && <span className="hero__title-accent">.</span>}

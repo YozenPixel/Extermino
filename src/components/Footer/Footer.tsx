@@ -13,7 +13,7 @@ const socialLinks = [
 ];
 
 interface QuickLink {
-  label: keyof Translations['nav'] | 'legal';
+  label: string;
   href: string;
 }
 

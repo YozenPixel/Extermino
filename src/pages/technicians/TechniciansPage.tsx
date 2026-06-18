@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Edit2, Trash2, HardHat, X, Phone, Mail, Calendar,
+  Edit2, Trash2, HardHat, X, Phone, Mail,
   Clock, CheckCircle2, AlertCircle, ClipboardList,
   Wrench,
 } from 'lucide-react';
@@ -36,7 +36,7 @@ export default function TechniciansPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<Technician | null>(null);
   const [selectedTech, setSelectedTech] = useState<Technician | null>(null);
-  const [form, setForm] = useState({ name: '', email: '', phone: '', specialties: [] as InterventionType[], availability: 'available' as string });
+  const [form, setForm] = useState({ name: '', email: '', phone: '', specialties: [] as InterventionType[], availability: 'available' as 'available' | 'busy' | 'off-duty' });
 
   const openAdd = () => {
     setEditing(null);
@@ -46,7 +46,7 @@ export default function TechniciansPage() {
 
   const openEdit = (tech: Technician) => {
     setEditing(tech);
-    setForm({ name: tech.name, email: tech.email, phone: tech.phone, specialties: tech.specialties, availability: tech.availability });
+    setForm({ name: tech.name, email: tech.email, phone: tech.phone, specialties: tech.specialties, availability: tech.availability as 'available' | 'busy' | 'off-duty' });
     setModalOpen(true);
   };
 
@@ -196,7 +196,7 @@ export default function TechniciansPage() {
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">{t.technicians.availability}</label>
-            <select value={form.availability} onChange={(e) => setForm({ ...form, availability: e.target.value })}
+            <select value={form.availability} onChange={(e) => setForm({ ...form, availability: e.target.value as 'available' | 'busy' | 'off-duty' })}
               className="w-full px-4 py-2.5 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-orange-500/20">
               {['available', 'busy', 'off-duty'].map((a) => (
                 <option key={a} value={a}>{t.technicians[a as keyof typeof t.technicians]}</option>
@@ -204,8 +204,8 @@ export default function TechniciansPage() {
             </select>
           </div>
           <div className="flex justify-end gap-3 pt-2">
-            <button onClick={() => setModalOpen(false)} className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg">{t.technicians.cancel}</button>
-            <button onClick={handleSave} className="px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg">{t.technicians.save}</button>
+            <button onClick={() => setModalOpen(false)} className="px-4 py-2.5 text-sm font-medium text-gray-600 hover:bg-gray-100 rounded-lg">{t.technicians['cancel']}</button>
+            <button onClick={handleSave} className="px-4 py-2.5 bg-orange-500 hover:bg-orange-600 text-white text-sm font-medium rounded-lg">{t.technicians['save']}</button>
           </div>
         </div>
       </Modal>
@@ -323,7 +323,7 @@ export default function TechniciansPage() {
                               intervention.status === 'in-progress' ? 'bg-orange-50 text-orange-600' :
                               intervention.status === 'completed' ? 'bg-green-50 text-green-600' : 'bg-red-50 text-red-500'
                             }`}>
-                              {t.interventions[intervention.status]}
+                              {t.interventions[intervention.status === 'in-progress' ? 'inProgress' : intervention.status]}
                             </span>
                           </div>
                         ))}

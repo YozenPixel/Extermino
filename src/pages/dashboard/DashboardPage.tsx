@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { CalendarCheck, CheckCircle2, Clock, Users, ArrowRight, AlertCircle, Info, CheckCircle } from 'lucide-react';
+import { CalendarCheck, CheckCircle2, Clock, Users, AlertCircle, Info, CheckCircle } from 'lucide-react';
 import { useI18n } from '../../lib/i18n';
 import { useDashboardStore, useInterventionStore } from '../../stores/appStore';
 import StatsCard from '../../components/ui/StatsCard';

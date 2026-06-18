@@ -91,15 +91,19 @@ export interface MonthlyStats {
 }
 
 export interface Translations {
-  nav: Record<string, string>;
-  landing: Record<string, string>;
-  auth: Record<string, string>;
-  dashboard: Record<string, string>;
-  clients: Record<string, string>;
-  interventions: Record<string, string>;
-  technicians: Record<string, string>;
-  calendar: Record<string, string>;
-  reports: Record<string, string>;
-  profile: Record<string, string>;
-  common: Record<string, string>;
+  [key: string]: any;
+  nav: { [key: string]: string };
+  header: { [key: string]: string };
+  hero: { [key: string]: string };
+  expertise: { [key: string]: any };
+  whyChooseUs: { [key: string]: any };
+  quickContact: { [key: string]: any };
+  footer: { [key: string]: string };
+  dashboard: { [key: string]: string };
+  clients: { [key: string]: string };
+  interventions: { [key: string]: string };
+  technicians: { [key: string]: string };
+  calendar: { [key: string]: string };
+  reports: { [key: string]: string };
+  profile: { [key: string]: string };
 }
